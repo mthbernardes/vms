@@ -1,10 +1,11 @@
 - name: "Installing all necessary packages"
   package:
     name:
-      - unbound
       - curl
-      - dnsutils
+      - unbound
       - dnsmasq
+      - dnsutils
+      - net-tools
     state: latest
     update_cache: yes
 
@@ -29,4 +30,3 @@
     name: "dnsmasq"
     state: started
     enabled: yes
-
