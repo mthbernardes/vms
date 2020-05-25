@@ -1,7 +1,7 @@
 # DNS Server
 
 ## Port forwarding
-- ssh: `22->2222`
+- ssh: `22->2323`
 - dns: `53->5353`
 
 ## Definition
