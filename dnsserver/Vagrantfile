@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.hostname = "dnsserver"
+  config.vm.box = "debian/stretch64"
+
+  # Configure network interface
+  config.trigger.before [:up] do |trigger|
+    trigger.info = "Configuring local network interface"
+    trigger.run = {path: "./local-scripts/network-config.sh"}
+  end
+
+  # Set DNS Server
+  config.trigger.after [:up] do |trigger|
+    trigger.info = "Configuring Configure DNS server"
+    trigger.run = {path: "./local-scripts/set-dns.sh"}
+  end
+
+  # Unset DNS Server
+  config.trigger.before [:destroy, :halt] do |trigger|
+    trigger.info = "Configuring Configure DNS server"
+    trigger.run = {path: "./local-scripts/unset-dns.sh"}
+  end
+
+  # Synced directory
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Networking config
+  config.vm.network "public_network", ip: "10.0.10.2", bridge: "vms-network"
+
+  # VM configuration
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = 1024
+    vb.cpus = 4 
+    vb.name = "dnsserver"
+  end
+
+  # Ansible
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provision/playbook.yml"
+    ansible.verbose = true
+  end
+end

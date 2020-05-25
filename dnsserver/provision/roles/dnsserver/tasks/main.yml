@@ -1,0 +1,32 @@
+- name: "Installing all necessary packages"
+  package:
+    name:
+      - unbound
+      - curl
+      - dnsutils
+      - dnsmasq
+    state: latest
+    update_cache: yes
+
+- name: "Copying Dnsmasq configuration file"
+  copy:
+    src: "{{ role_path }}/files/dnsmasq/dnsmasq.conf"
+    dest: "/etc/dnsmasq.conf"
+
+- name: "Copying Unbound configuration file"
+  copy:
+    src: "{{ role_path }}/files/unbound/server.conf"
+    dest: "/etc/unbound/unbound.conf.d/server.conf"
+
+- name: "Starting unbound"
+  service:
+    name: "unbound"
+    state: started
+    enabled: yes
+
+- name: "Starting dnsmasq"
+  service:
+    name: "dnsmasq"
+    state: started
+    enabled: yes
+
