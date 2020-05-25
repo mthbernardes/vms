@@ -3,16 +3,10 @@
     name:
       - curl
       - unbound
-      - dnsmasq
       - dnsutils
       - net-tools
     state: latest
     update_cache: yes
-
-- name: "Copying Dnsmasq configuration file"
-  copy:
-    src: "{{ role_path }}/files/dnsmasq/dnsmasq.conf"
-    dest: "/etc/dnsmasq.conf"
 
 - name: "Copying Unbound configuration file"
   copy:
@@ -22,11 +16,5 @@
 - name: "Starting unbound"
   service:
     name: "unbound"
-    state: started
-    enabled: yes
-
-- name: "Starting dnsmasq"
-  service:
-    name: "dnsmasq"
     state: started
     enabled: yes
