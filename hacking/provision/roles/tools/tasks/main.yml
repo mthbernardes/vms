@@ -1,0 +1,12 @@
+- name: "Installing tools with apt-get"
+  package:
+    name:
+      - git
+      - curl
+      - nmap
+      - sqlmap
+      - dnsutils
+      - net-tools
+      - firefox-esr
+    state: latest
+    update_cache: yes

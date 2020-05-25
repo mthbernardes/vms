@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.hostname = "hacking"
+  config.vm.box = "debian/stretch64"
+
+  config.vm.define "hacking" do |hacking|
+  end
+
+  # Networking config
+  config.vm.network :forwarded_port, guest: 22, host: 2424, host_ip: "127.0.0.1", id: "ssh", protocol: "tcp"
+
+  # SSH
+  config.ssh.port = 2424
+  config.ssh.insert_key = true
+
+  # VM configuration
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = 2048
+    vb.cpus = 4 
+    vb.name = "hacking"
+  end
+
+  # Ansible
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provision/playbook.yml"
+    ansible.verbose = true
+  end
+end

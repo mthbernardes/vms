@@ -1,0 +1,12 @@
+- name: "Download burp-suite jar"
+  become: true
+  get_url:
+    url: "https://portswigger.net/burp/releases/download?product=community&version=2020.4.1&type=Jar"
+    dest: "/opt/burp.jar"
+    mode: "0755"
+
+- name: "Copying burp-suite starter"
+  copy:
+    src: "{{ role_path }}/files/burp-suite"
+    dest: "/usr/local/bin/burp-suite"
+    mode: "0755"
